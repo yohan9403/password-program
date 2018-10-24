@@ -1,2 +1,2 @@
-# password-program
-simple password file enrollment, authentication program
+# make enroll faster
+# make authentication faster
