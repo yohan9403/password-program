@@ -54,11 +54,19 @@ def main(argv):
 
 
     # check if user exists, and if user does exist, reject request
-    with open('pw', 'r') as pw_table:
-        for line in pw_table:
-            for existing_ids in line.strip('\n').split(':'):
-                if user_id in existing_ids:
-                    exit("Rejected.\n")
+#    with open('pw', 'r') as pw_table:
+#        for line in pw_table:
+#            for existing_ids in line.strip('\n').split(':'):
+#                if user_id in existing_ids:
+#                    exit("Rejected.\n")
+
+    with open('pw', 'r') as pwtable:
+        for line in pwtable:
+            existing_ids = line[:line.index(':')]
+#            print(existing_ids)
+            if user_id in existing_ids:
+                exit("Rejected.\n")
+
 
     # user name does not exist in pw
     # create hash to store in password file
