@@ -63,7 +63,7 @@ def main(argv):
             password_table[key] = val
 
     # test to see if password table is generating correctly
-    print(password_table)
+    # print(password_table)
 
     # check if user has been enrolled previously,
     # if so, reject request
