@@ -26,7 +26,7 @@ def main(argv):
             password_table[key] = val
 
     # test to see if password_table is generating correctly
-    print(password_table)
+    # print(password_table)
 
     # check if user_id exists in password_table
     # if not, reject
