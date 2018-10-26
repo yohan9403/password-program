@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 
-# CPSC526 Assignment2 Question 1
 # ID: 10136488
+# CPSC526 Assignment2 Question 1
+# enroll.py
+# enrolls user into system, given user provided id has not
+# been previously enrolled, and user provided password does not break the rules
+# note:
 # PASSLIB library's argon2 function does the salting, then hash the password
 # i.e., argon2.hash("password") -> generates salt, then hash the password.
 # https://passlib.readthedocs.io/en/stable/lib/passlib.hash.argon2.html
@@ -61,9 +65,6 @@ def main(argv):
             key = id_hash_pairs[:id_hash_pairs.index(':')]
             val = id_hash_pairs[id_hash_pairs.index(':') + 1:].strip('\n')
             password_table[key] = val
-
-    # test to see if password table is generating correctly
-    # print(password_table)
 
     # check if user has been enrolled previously,
     # if so, reject request

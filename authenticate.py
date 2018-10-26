@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 
+# ID: 10136488
+# CPSC526 Assignment2 Question 1
+# authenticate.py
+# grants access to users that provides correct credential stored in password file
+
 from passlib.hash import argon2
 import sys
 import os
@@ -25,14 +30,11 @@ def main(argv):
             val = id_hash_pairs[id_hash_pairs.index(':') + 1:].strip('\n')
             password_table[key] = val
 
-    # test to see if password_table is generating correctly
-    # print(password_table)
-
-    # check if user_id exists in password_table
-    # if not, reject
+    # check if user_id exists in password_table, deny access if not
     if user_id not in password_table:
         exit("Access denied.\n")
     # if user exists in the password_table, generate hash using password input
+    # grant access if match
     hash = argon2.hash(password)
     if argon2.verify(password, password_table.get(user_id)):
         exit("Access granted.\n")
