@@ -22,6 +22,7 @@ def main(argv):
     password = sys.argv[2]
 
     # dont let user use :, since its used as delimiter for user_id and password in password file
+    # every other character except ' ' is fine
     if ':' in user_id:
         exit('Dont use ":" in your ID.')
 
@@ -49,36 +50,33 @@ def main(argv):
     # if everything is okay for id and password, we can store the user name
     # AND password together in a password file, using argon2 (probably best practice)
     # check if password file exists
+    # create a password file otherwise
     if not os.path.exists('pw'):
         f = open('pw', 'a').close()
 
+    # populate hash table from password file to make enrollment process faster
+    password_table = {}
+    with open('pw', 'r') as password_file:
+        for id_hash_pairs in password_file:
+            key = id_hash_pairs[:id_hash_pairs.index(':')]
+            val = id_hash_pairs[id_hash_pairs.index(':') + 1:].strip('\n')
+            password_table[key] = val
 
-    # check if user exists, and if user does exist, reject request
-#    with open('pw', 'r') as pw_table:
-#        for line in pw_table:
-#            for existing_ids in line.strip('\n').split(':'):
-#                if user_id in existing_ids:
-#                    exit("Rejected.\n")
+    # test to see if password table is generating correctly
+    print(password_table)
 
-    with open('pw', 'r') as pwtable:
-        for line in pwtable:
-            existing_ids = line[:line.index(':')]
-#            print(existing_ids)
-            if user_id in existing_ids:
-                exit("Rejected.\n")
-
-
-    # user name does not exist in pw
-    # create hash to store in password file
-    to_hash = user_id+password
-    hash = argon2.hash(to_hash)
-
-
-    # open pw file to store userid:correspondinghash
-    pw_table = open('pw', 'a')
-    pw_table.write(user_id + ':' + hash + '\n')
-    exit("Accepted.\n")
-
+    # check if user has been enrolled previously,
+    # if so, reject request
+    if user_id in password_table:
+        exit("Rejected.\n")
+    # otherwise
+    else:
+        # create hash to store in password file
+        # and open pw file to store userid:correspondinghash
+        hash = argon2.hash(password)
+        with open('pw', 'a') as password_file:
+            password_file.write(user_id + ':' + hash + '\n')
+            exit("Accepted.\n")
 
 if __name__ == '__main__':
     main(sys.argv[1:])
